@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            body{
+                font-family: arial;
+                background-color: black;
+                color: white;
+            }
+            .title{
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .icon-move{
+                height: 50px;
+            
+            }
+            .icon-button{
+                background-color: transparent;
+                border: 3px solid white;
+                height: 120px;
+                width: 120px;
+                border-radius: 60px;
+                margin-right: 10px;
+                cursor: pointer;
+
+            }
+            .result{
+                font-size: 25px;
+                font-weight: bold;
+                margin-top: 50px
+            }
+            .js-score{
+                margin-top: 60px;
+                
+            }
+            .reset{
+                padding: 8px 17px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+            @media(max-width:500px){
+                .reset{
+                    cursor: none;
+                }
+                .icon-button{
+                    cursor: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <p class="title">Stone,Paper,Scissors</p>
+        <button class="icon-button" onclick="
+            playGame('stone');
+        "><img src="stone-emoji.png" alt="" class="icon-move"></button>
+        <button class="icon-button" onclick="
+            playGame('paper');
+      
+      "><img src="paper-emoji.png" alt="" class="icon-move"></button>
+        <button class="icon-button" onclick="
+        
+            playGame('scissors');
+      "><img src="scissors-emoji.png" alt="" class="icon-move"></button>
+      <p class="js-result result"></p>
+      <p class="select"></p>
+      <p class="js-score"></p>
+      <button onclick="
+        score.wins=0;
+        score.loses=0;
+        score.ties=0;
+        localStorage.removeItem('score');
+        document.querySelector('.js-score').innerHTML=`Wins: ${score.wins}, losses: ${score.loses}, Ties: ${score.ties}, Total Matches:${score.wins+score.loses+score.ties}`;
+        document.querySelector('.js-result').innerHTML=`${result}`;
+        document.querySelector('.select').innerHTML=`You picked ${player}, Computer picked ${game} `;
+      " class="reset">Reset Score</button>
+        <script>
+            function computerClick(){
+                const randomNum=Math.random();
+                let game=''
+                if (randomNum>=0 && randomNum<1/4){
+                    game='stone';
+                  }else if(randomNum>=1/4 && randomNum<3/4){
+                    game='paper';
+                  }else if(randomNum>=3/4 && randomNum<1){
+                    game='scissors';
+                  }
+                  return game;
+            }
+            let score=JSON.parse(localStorage.getItem('score'))
+            ||{
+                    wins:0,
+                    loses:0,
+                    ties:0
+                };
+
+            
+            
+            document.querySelector('.js-score').innerHTML=`Wins: ${score.wins}, losses: ${score.loses}, Ties: ${score.ties}, Total Matches:${score.wins+score.loses+score.ties}`;
+            document.querySelector('.js-result').innerHTML=`${result}`;
+            document.querySelector('.select').innerHTML=`You picked ${player}, Computer picked ${game} `;
+            function playGame(player){
+                let result=''
+                const game = computerClick();
+                if(player==='scissors'){
+                    if (game==='stone'){
+                        result='You Lose';
+                    }
+                    else if(game==='paper'){
+                        result='You Win';
+                    }
+                    else if(game==='scissors'){
+                        result='Tie';
+                    }
+                }else if(player==='stone'){
+                    if (game==='stone'){
+                        result='Tie';
+                    }
+                    else if(game==='paper'){
+                        result='You Lose';
+                    }
+                    else if(game==='scissors'){
+                        result='You Win';
+                    }
+                }else if(player==='paper'){
+                    if (game==='stone'){
+                        result='You Win';
+                    }
+                    else if(game==='paper'){
+                        result='Tie';
+                    }
+                    else if(game==='scissors'){
+                        result='You Lose';
+                    }
+                }
+                if (result==='You Win'){
+                    score.wins+=1;
+                }else if(result==='You Lose'){
+                    score.loses+=1
+                }else if(result==='Tie'){
+                    score.ties+=1
+                }
+                localStorage.setItem('score', JSON.stringify(score));
+                document.querySelector('.js-score').innerHTML=`Wins: ${score.wins}, losses: ${score.loses}, Ties: ${score.ties}, Total Matches:${score.wins+score.loses+score.ties}`;
+                document.querySelector('.js-result').innerHTML=`${result}.`
+                document.querySelector('.select').innerHTML=`You <img src="${player}-emoji.png" alt="" class="icon-move"> <img src="${game}-emoji.png" alt="" class="icon-move">Computer`
+
+              
+            }
+   
+        </script>
+    </body>
+</html>
